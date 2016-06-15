@@ -37,6 +37,8 @@ fi
 #################################################################
 airmon-ng check kill #check and kill any processes that may intterupt
 airmon-ng start ${INTERFACE}
+#new interface name
+INTERFACE = "wlan1mon"
 iwconfig ${INTERFACE} # mon0
 
 #################################################################
