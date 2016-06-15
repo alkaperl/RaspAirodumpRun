@@ -40,7 +40,6 @@ airmon-ng start ${INTERFACE}
 #new interface name
 INTERFACE = "wlan1mon"
 iwconfig ${INTERFACE} # mon0
-
 #################################################################
 # GET INTERFACE MAC ADDRESS
 #################################################################
@@ -63,7 +62,6 @@ while [$TIME -ne END]
 do
 	TIME = $(date + "%s")
 done
-
 
 #################################################################
 # Stopping program
