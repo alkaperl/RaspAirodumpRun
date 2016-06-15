@@ -48,7 +48,7 @@ iwconfig ${INTERFACE} # mon0
 # START AIRODUMP IN XTERM WINDOW
 #################################################################
 echo "MESSAGE: Starting packet capture - Ctrl-c to end it"
-timeout 60 airodump-ng wlan1mon -w node1
+timeout 60s airodump-ng wlan1mon -w node1
 sleep 2
 
 #################################################################
