@@ -48,15 +48,8 @@ iwconfig ${INTERFACE} # mon0
 # START AIRODUMP IN XTERM WINDOW
 #################################################################
 echo "MESSAGE: Starting packet capture - Ctrl-c to end it"
-airodump-ng wlan1mon -w node1
+timeout 60 airodump-ng wlan1mon -w node1
 sleep 2
-
-TIME = $(date + "%T")
-END = $(date + "%T") + 60
-while [$TIME -ne END]
-do
-	TIME = $(date + "%T")
-done
 
 #################################################################
 # Stopping program
