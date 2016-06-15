@@ -40,12 +40,7 @@ airmon-ng start ${INTERFACE}
 #new interface name
 INTERFACE = "wlan1mon"
 iwconfig ${INTERFACE} # mon0
-#################################################################
-# GET INTERFACE MAC ADDRESS
-#################################################################
-MACADDRESS=`ifconfig ${INTERFACE} | grep ${INTERFACE} | tr -s ' ' | cut -d ' ' -f5 | cut -c 1-17`
-
-#################################################################
+############################################
 # Get current time , script will run at hourly intervals
 #################################################################
 
@@ -56,11 +51,11 @@ echo "MESSAGE: Starting packet capture - Ctrl-c to end it"
 airodump-ng wlan1 -w node1
 sleep 2
 
-TIME = $(date + "%s")
-END = $(date + "%s") + 60
+TIME = $(date + "%T")
+END = $(date + "%T") + 60
 while [$TIME -ne END]
 do
-	TIME = $(date + "%s")
+	TIME = $(date + "%T")
 done
 
 #################################################################
