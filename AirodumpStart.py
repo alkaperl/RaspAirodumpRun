@@ -1,17 +1,15 @@
 #!/usr/bin/env python
-import time
-import pexpect
-import fcntl
-import os
-import sys
+import os, csv, pexpect,time
+from poormanslogging import info, warn, error
+
+import src.settings as settings
 
 Time = 36000
 
 def airodumpStart():
-	threading.Timer(Time, airodumpStart).start()
-	airodump = pexpect.spawn('airodump-ng wlan1mon -w data') 
-    time.sleep(10)
-    airodump.close()
+	cmd_airodump = pexpect.spawn('airodump-ng wlan1mon -w data')
+	cmd_airodump.expect([pexpect.TIMEOUT, pexpect.EOF], 10)
+	cmd_airodump.close()
 
 
 airodumpStart()
