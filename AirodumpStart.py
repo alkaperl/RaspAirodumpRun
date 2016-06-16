@@ -1,8 +1,10 @@
 #!/usr/bin/env python
-import os, csv, pexpect,time
-from poormanslogging import info, warn, error
-
-import src.settings as settings
+import os
+import csv
+import pexpect
+import time
+import subprocess
+import datetime
 
 Time = 36000
 
@@ -12,4 +14,7 @@ def airodumpStart():
 	cmd_airodump.close()
 
 
-airodumpStart()
+###ScriptStart##
+#airodumpStart()
+
+print datetime.datetime.now()
