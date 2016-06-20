@@ -9,6 +9,7 @@ import json
 import commands
 import urllib
 import subprocess
+import glob
 
 url = "http://45.55.165.42/Device"
 
@@ -57,10 +58,11 @@ while True:
 	airodumpStart()
 
 	print "Processing the file... please wait."
+	time.sleep(2)
 	print "Pushing to database..."
 
-
-	with open('data-01.csv' , 'rb') as csvfile:
+	file = min(glob.iglob('data-0*.csv' , key=os.path.getctime))
+	with open('data-0*.csv' , 'rb') as csvfile:
 		lines = csv.reader(csvfile)
 		lines.next()
 		for line in lines:
@@ -74,6 +76,6 @@ while True:
 
 	print "Successfully pushed to database"
 	print "removing csv file"
-	os.remove('data-01.csv')
+	os.remove(file)
 	print "Script completed at: %s" % (datetime.datetime.now())
 	
