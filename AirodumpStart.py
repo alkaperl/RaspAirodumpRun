@@ -8,10 +8,14 @@ import requests
 import json
 import commands
 import urllib
+import subprocess
 
 url = "http://45.55.165.42/Device"
 
 def airodumpStart():
+	print "Setting up monitoring mode.."
+	subprocess.call(["airmon-ng","check", "kill"])
+	subprocess.call(["airmon-ng", "start","wlan1"])
 	print "Startgin up Airodump-ng:"
 	print "\tInterface : Wlan1mon"
 	print "\tFileType: csv"
