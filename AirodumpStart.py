@@ -71,7 +71,7 @@ while True:
 					lines.next()
 					for line in lines:
 						if len(line) > 1:
-							payload = {'node' : myMac("etho") , 'mac' : line[0] , 'firstseen': line[1] , 'lastseen' : line[2], 'company' : getMAC(line[0]) }
+							payload = {'node' : myMAC("etho") , 'mac' : line[0] , 'firstseen': line[1] , 'lastseen' : line[2], 'company' : getMAC(line[0]) }
 							r = requests.post(url , params=payload)
 
 	print "Successfully pushed to database"
