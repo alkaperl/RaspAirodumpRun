@@ -21,7 +21,7 @@ def airodumpStart():
 	print "\tInterface : Wlan1mon"
 	print "\tFileType: csv"
 	print "\tFilename: data-01.csv"
-	cmd_airodump = pexpect.spawn('airodump-ng wlan1mon -w data')
+	cmd_airodump = pexpect.spawn('airodump-ng wlan1mon --output-format csv -w data')
 	cmd_airodump.expect([pexpect.TIMEOUT, pexpect.EOF], 30)
 	print "Airodump-ng Stopping..."
 	print "Saving Airodump-ng contents.."
@@ -61,7 +61,7 @@ while True:
 	time.sleep(2)
 	print "Pushing to database..."
 
-	file = min(glob.iglob('data-0*.csv' , key=os.path.getctime))
+	file = min(glob.iglob('data-0*.csv'))
 	with open('data-0*.csv' , 'rb') as csvfile:
 		lines = csv.reader(csvfile)
 		lines.next()
