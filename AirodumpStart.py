@@ -11,7 +11,7 @@ import urllib
 import subprocess
 import glob
 
-url = "http://45.55.165.42/Device"
+url = "http://45.55.165.42/Devices"
 
 def airodumpStart():
 	print "Setting up monitoring mode.."
@@ -40,7 +40,7 @@ def getMAC(MACADDRESS):
 		return "Unkown"
 
 def myMAC(iface):
-	words = commands.getoutput("ifconfig" + iface).split()
+	words = commands.getoutput("ifconfig " + iface).split()
 	if "HWaddr" in words:
 		return words[words.index("HWaddr") + 1]
 	else:
@@ -49,33 +49,35 @@ def myMAC(iface):
 ###ScriptStart##
 #airodumpStart()
 
-while True:
-	print "Script starting....\n"
+NodeMAC = myMAC("eth0")
 
-	print  "Script initiated at : %s" % (datetime.datetime.now())
-	print "Please do not interupt the script...\n"
+print "Script starting....\n"
 
-	airodumpStart()
+print  "Script initiated at : %s" % (datetime.datetime.now())
+print "Please do not interupt the script...\n"
 
-	print "Processing the file... please wait."
-	time.sleep(2)
-	print "Pushing to database..."
+airodumpStart()
 
-	file = min(glob.iglob('data-0*.csv'))
-	with open(file , 'rb') as csvfile:
-		lines = csv.reader(csvfile)
-		lines.next()
-		for line in lines:
-			if len(line) > 1:
-				if "Station" in line[0]:
-					lines.next()
-					for line in lines:
-						if len(line) > 1:
-							payload = {'node' : myMAC("etho") , 'mac' : line[0] , 'firstseen': line[1] , 'lastseen' : line[2], 'company' : getMAC(line[0]) }
-							r = requests.post(url , params=payload)
+print "Processing the file... please wait."
+time.sleep(2)
+print "Pushing to database..."
 
-	print "Successfully pushed to database"
-	print "removing csv file"
-	os.remove(file)
-	print "Script completed at: %s" % (datetime.datetime.now())
+file = min(glob.iglob('data-0*.csv'))
+with open(file , 'rb') as csvfile:
+	lines = csv.reader(csvfile)
+	lines.next()
+	for line in lines:
+		if len(line) > 1:
+			if "Station" in line[0]:
+				lines.next()
+				for line in lines:
+					if len(line) > 1:
+						payload = {'node' : NodeMAC , 'mac' : line[0] , 'firstseen': line[1] , 'lastseen' : line[2], 'company' : getMAC(line[0]) }
+						r = requests.post(url , params=payload)
+						print r.text
+
+print "Successfully pushed to database"
+print "removing csv file"
+os.remove(file)
+print "Script completed at: %s" % (datetime.datetime.now())
 	
