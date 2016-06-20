@@ -62,7 +62,7 @@ while True:
 	print "Pushing to database..."
 
 	file = min(glob.iglob('data-0*.csv'))
-	with open('data-0*.csv' , 'rb') as csvfile:
+	with open(file , 'rb') as csvfile:
 		lines = csv.reader(csvfile)
 		lines.next()
 		for line in lines:
