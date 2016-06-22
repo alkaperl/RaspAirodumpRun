@@ -11,7 +11,7 @@ import urllib
 import subprocess
 import glob
 
-url = "http://45.55.165.42/Devices"
+url = "http://45.55.165.42/Devices/New"
 
 def airodumpStart():
 	print "Setting up monitoring mode.."
@@ -51,31 +51,30 @@ def myMAC(iface):
 
 NodeMAC = myMAC("eth0")
 
-	print "Script starting....\n"
+print "Script starting....\n"
 
-	print  "Script initiated at : %s" % (datetime.datetime.now())
-	print "Please do not interupt the script...\n"
+print  "Script initiated at : %s" % (datetime.datetime.now())
+print "Please do not interupt the script...\n"
 
-	airodumpStart()
+airodumpStart()
 
-	print "Processing the file... please wait."
-	time.sleep(2)
-	print "Pushing to database..."
+print "Processing the file... please wait."
+time.sleep(2)
+print "Pushing to database..."
 
-	file = min(glob.iglob('data-0*.csv'))
-	with open(file , 'rb') as csvfile:
-		lines = csv.reader(csvfile)
-		lines.next()
-		for line in lines:
-			if len(line) > 1:
-				if "Station" in line[0]:
-					lines.next()
-					for line in lines:
-						if len(line) > 1:
-							payload = {'node' : NodeMAC , 'mac' : line[0] , 'firstseen': line[1] , 'lastseen' : line[2], 'company' : getMAC(line[0]) }
-							r = requests.post(url , params=payload)
-
-	print "Successfully pushed to database"
-	print "removing csv file"
-	os.remove(file)
-	print "Script completed at: %s" % (datetime.datetime.now())
+file = min(glob.iglob('data-0*.csv'))
+with open(file , 'rb') as csvfile:
+	lines = csv.reader(csvfile)
+	lines.next()
+	for line in lines:
+		if len(line) > 1:
+			if "Station" in line[0]:
+				lines.next()
+				for line in lines:
+					if len(line) > 1:
+						payload = {'node' : NodeMAC , 'mac' : line[0] , 'firstseen': line[1] , 'lastseen' : line[2], 'company' : getMAC(line[0]) }
+						r = requests.post(url , params=payload)
+print "Successfully pushed to database"
+print "removing csv file"
+os.remove(file)
+print "Script completed at: %s" % (datetime.datetime.now())
