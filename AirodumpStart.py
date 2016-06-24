@@ -23,7 +23,7 @@ import subprocess
 import glob
 
 #This is the API endpoint for pushing new records into the database
-API = "http://45.55.165.42/Devices/New"
+API = "http://45.55.165.42/Request/newRecord"
 
 def airodumpStart():
 	"""
@@ -51,7 +51,7 @@ def airodumpStart():
 	subprocess.call(["airmon-ng", "start","wlan1"])
 	print "Startgin up Airodump-ng: \n\tInterface : Wlan1mon\n\tFileType: csv\n\tFilename: data-01.csv"
 	cmd_airodump = pexpect.spawn('airodump-ng wlan1mon --output-format csv -w data')
-	cmd_airodump.expect([pexpect.TIMEOUT, pexpect.EOF], 30)
+	cmd_airodump.expect([pexpect.TIMEOUT, pexpect.EOF], 3600)
 	print "Airodump-ng Stopping...\nSaving Airodump-ng contents.."
 	cmd_airodump.close()
 	print "Save complete! --"
