@@ -54,7 +54,7 @@ def airodumpStart():
 	print "Save complete! --"
 
 def pushToDatabase():
-	p = subprocess.Popen([sys.executable m '/home/pi/RaspAirodumpRun/toDatabase.py'],
+	p = subprocess.Popen([sys.executable , '/home/pi/RaspAirodumpRun/toDatabase.py'],
 			stdout=subprocess.PIPE,
 			stderr=subprocess.STDOUT)
 
