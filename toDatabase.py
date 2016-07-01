@@ -32,7 +32,7 @@ def myMAC(iface):
 NodeMAC = myMAC("eth0")
 
 #This is the API endpoint for pushing new records into the database
-API = "http://45.55.165.42/Request/newRecord"
+API = "http://172.16.0.32/RawData/newData"
 
 flag = 0
 file = min(glob.iglob('data-0*.csv'))	#find old data file 
@@ -45,7 +45,7 @@ with open(file , 'rb') as csvfile:		#process file as csvfile as long as it is op
 				flag = 1
 				continue
 			if flag == 1:
-				payload = {'node' : NodeMAC , 'mac' : line[0] , 'firstseen': line[1] , 'lastseen' : line[2]} #prepare payload
+				payload = {'node' : NodeMAC , 'mac' : line[0] , 'firstseen': line[1] , 'lastseen' : line[2], 'power' : line[3] , 'packetnum' : line[4]} #prepare payload
 				r = requests.post(API , params=payload)	#push payload to file
 				if 200 != r.status_code:
 					with open('errorLog.txt' , 'a') as errorLog:
