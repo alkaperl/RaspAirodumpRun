@@ -10,6 +10,26 @@ import urllib
 import subprocess
 import glob
 
+def myMAC(iface):
+	"""
+		Function: myMAC
+		Params:   Networking interface
+		Desc:     A string with the name of an Interface. The function
+				  will get the output of ifconfig (interface) and look for
+				  the HWaddr which is the MAC address. This is used to identify
+				  the node which is pushing records into the database.
+		Library:  commands (execute bash/os commands)
+	"""
+	words = commands.getoutput("ifconfig " + iface).split()
+	if "HWaddr" in words:
+		return words[words.index("HWaddr") + 1]
+	else:
+		return 'NULL'
+
+
+### Script Start ###
+NodeMAC = myMAC("eth0")
+
 #This is the API endpoint for pushing new records into the database
 API = "http://45.55.165.42/Request/newRecord"
 
