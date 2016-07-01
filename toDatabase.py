@@ -9,6 +9,7 @@ import commands
 import urllib
 import subprocess
 import glob
+import sys
 
 def myMAC(iface):
 	"""

@@ -9,7 +9,7 @@
 			 Clients and push them into a database for later
 			 use. This script is for research purposes only.
 """
-
+import sys
 import os
 import csv
 import pexpect
