@@ -22,9 +22,6 @@ import urllib
 import subprocess
 import glob
 
-#This is the API endpoint for pushing new records into the database
-API = "http://45.55.165.42/Request/newRecord"
-
 def airodumpStart():
 	"""
 	Function: airodumpStart
@@ -51,10 +48,15 @@ def airodumpStart():
 	subprocess.call(["airmon-ng", "start","wlan1"])
 	print "Startgin up Airodump-ng: \n\tInterface : Wlan1mon\n\tFileType: csv\n\tFilename: data-01.csv"
 	cmd_airodump = pexpect.spawn('airodump-ng wlan1mon --output-format csv -w data')
-	cmd_airodump.expect([pexpect.TIMEOUT, pexpect.EOF], 3600)
+	cmd_airodump.expect([pexpect.TIMEOUT, pexpect.EOF], 60)
 	print "Airodump-ng Stopping...\nSaving Airodump-ng contents.."
 	cmd_airodump.close()
 	print "Save complete! --"
+
+def pushToDatabase():
+	p = subprocess.Popen([sys.executable m '/home/pi/RaspAirodumpRun/toDatabase.py'],
+			stdout=subprocess.PIPE,
+			stderr=subprocess.STDOUT)
 
 def getMAC(MACADDRESS):
 	"""
@@ -100,27 +102,10 @@ while True:
 	print "Please do not interupt the script...\n"
 
 	airodumpStart()
-
+	pushToDatabase()
 	print "Processing the file... please wait."
 	time.sleep(2)
-	print "Pushing to database..."
 
-	flag = 0
-	file = min(glob.iglob('data-0*.csv'))	#find old data file 
-	with open(file , 'rb') as csvfile:		#process file as csvfile as long as it is open and read as binary
-		lines = csv.reader(csvfile)			#set up a csv file reader
-		lines.next()						#skip the first null column which makes no sense as it would be line[-1] but this works
-		for line in lines:					#do the following for each line in the file
-			if len(line) > 1:				#make sure there is content in the line
-				if "Station" in line[0]:	#keep searching until Station section is found
-					flag = 1
-					continue
-				if flag == 1:
-					payload = {'node' : NodeMAC , 'mac' : line[0] , 'firstseen': line[1] , 'lastseen' : line[2], 'company' : getMAC(line[0]) } #prepare payload
-					r = requests.post(API , params=payload)	#push payload to file
 
-	print "Successfully pushed to database"
-	print "removing csv file"
-	os.remove(file)		#remove current Airodump-ng file for future reinitialization
 	print "Script completed at: %s" % (datetime.datetime.now())	#script end time.
 
